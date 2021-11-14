@@ -14,7 +14,7 @@ app = Flask(__name__)
 # Load the model from the file
 xgboost_model = joblib.load('model/xgboost_model.pkl')
 item_final_rating = joblib.load('model/item_final_rating')
-prod_tfidf = joblib.load('model/prod_tfidf')
+sentiment_dict = joblib.load('model/sentiment_dict')
 
 @app.route('/')
 def home():
@@ -34,15 +34,13 @@ def predict():
         top_20_products = d.index.tolist()
         #print(top_20_products)
 
-        sentiment_dict={}
-        for i in top_20_products:
-            reviews_list = prod_tfidf[i]
-            sentiment = [xgboost_model.predict(rev) for rev in reviews_list]
-            pos_sent = 100-((reduce(lambda x,y:x+y,sentiment)/len(sentiment))*100)
-            sentiment_dict[i] = pos_sent
-        #print(sentiment_dict)
-
-        top_5 = [key for key,value in sorted(sentiment_dict.items(), key = lambda x:x[1], reverse=True)[:5]]
+        sent={}
+        for prod in top_20_products:
+            if prod in sentiment_dict:
+                sent[prod]=round(float(sentiment_dict[prod]),2)
+        
+        top_5 = [key for key,value in sorted(sent.items(), key = lambda x:x[1], reverse=True)[:5]]
+        print(top_5)
 
         final_list=[]
 
