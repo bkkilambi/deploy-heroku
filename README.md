@@ -2,6 +2,8 @@
 
 Heroku deployed app link - https://deploy-recoystem-heroku.herokuapp.com/
 
+Gtihub link for all the code - https://github.com/bkkilambi/deploy-heroku
+
 Files Description: 
 
 Project_final.ipynb : All the model training, finding best models, code for recommendation system etc are in the Project_final.ipynb file. 
