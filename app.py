@@ -18,33 +18,39 @@ prod_tfidf = joblib.load('model/prod_tfidf')
 
 @app.route('/')
 def home():
-    return "Sentiment based Recommendation System Deployment!!"
+    #return "Sentiment based Recommendation System Deployment!!"
+    return render_template('index.html')
 
-@app.route('/predict')
+@app.route('/predict', methods=['POST'])
 def predict():
     # Get values from browser
-    username = request.args['reviews_username']
-    d = item_final_rating.loc[username].sort_values(ascending=False)[0:20]
-    top_20_products = d.index.tolist()
-    print(top_20_products)
+    if (request.method == 'POST'):
+        username = request.args['reviews_username']
+        d = item_final_rating.loc[username].sort_values(ascending=False)[0:20]
+        top_20_products = d.index.tolist()
+        #print(top_20_products)
     
-    sentiment_dict={}
-    for i in top_20_products:
-        reviews_list = prod_tfidf[i]
-        sentiment = [xgboost_model.predict(rev) for rev in reviews_list]
-        pos_sent = 100-((reduce(lambda x,y:x+y,sentiment)/len(sentiment))*100)
-        sentiment_dict[i] = pos_sent
-    print(sentiment_dict)
+        sentiment_dict={}
+        for i in top_20_products:
+            reviews_list = prod_tfidf[i]
+            sentiment = [xgboost_model.predict(rev) for rev in reviews_list]
+            pos_sent = 100-((reduce(lambda x,y:x+y,sentiment)/len(sentiment))*100)
+            sentiment_dict[i] = pos_sent
+        #print(sentiment_dict)
     
+        top_5 = [key for key,value in sorted(sentiment_dict.items(), key = lambda x:x[1], reverse=True)[:5]]
     
-    top_5 = [key for key,value in sorted(sentiment_dict.items(), key = lambda x:x[1], reverse=True)[:5]]
+        final_list=[]
     
-    final_list=[]
-    for prod in top_5:
-        final_list.append(prod)
+        for prod in top_5:
+            final_list.append(prod)
+        print(final_list)
+    
+        return render_template('index.html', prediction_text='Recommendations : {}'.format(final_list))
+    else:
+        return render_template('index.html')
         
-    
-    return jsonify(final_list)
+    #return jsonify(final_list)
     
 
 if __name__ == "__main__":
