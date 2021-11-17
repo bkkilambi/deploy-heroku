@@ -48,7 +48,7 @@ def predict():
             final_list.append(prod)
         print(final_list)
 
-        return render_template('index.html', prediction_text='Recommendations : {}'.format(final_list))
+        return render_template('index.html', prediction_text='Recommendations for user {} : {}'.format(username,final_list))
     else:
         return render_template('index.html')
 
