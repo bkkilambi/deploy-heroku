@@ -14,4 +14,4 @@ model folder : Contains the xgboost ML model for predicting semtiment, user_rati
 from the train dataset which are then given to the ML model to get sentiments (for the top 20 recommended products) and then the products which have the highest 
 percentage of positive sentiments are chosen. 
 
-requirements.txt : All the required/dependent packages to be installed
+requirements.txt : All the required/dependent packages to be installed are listed here
