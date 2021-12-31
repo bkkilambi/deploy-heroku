@@ -1,6 +1,6 @@
 # deploy-heroku
 
-Heroku deployed app link is here - https://deploy-recoystem-heroku.herokuapp.com/
+Heroku deployed app link is given here - https://deploy-recoystem-heroku.herokuapp.com/
 
 Gtihub link for all the code - https://github.com/bkkilambi/deploy-heroku
 
